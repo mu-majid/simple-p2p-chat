@@ -28,7 +28,6 @@ const node = await createLibp2p({
       peerInfoMapper: removePublicAddressesMapper,
       validators: {
         [prefix]: async (key, value) => {
-          // do nothing, it's valid
         }
       },
       selectors: {
@@ -44,16 +43,15 @@ const node = await createLibp2p({
   }
 })
 
+// Emitted when a peer has been found
 node.addEventListener('peer:connect', (evt) => {
   const peerId = evt.detail
-  console.log('Connection established to:', peerId.toString()) // Emitted when a peer has been found
+  console.log('Connection established to:', peerId.toString()) 
 })
 
 // Handle messages for the protocol
 await node.handle('/chat/1.0.0', async ({ stream }) => {
-  // Send stdin to the stream
   stdinToStream(stream)
-  // Read the stream and output to console
   streamToConsole(stream)
 })
 
@@ -61,7 +59,8 @@ node.addEventListener('peer:discovery', async (evt) => {
   const peerInfo = evt.detail
   console.log('Discovered:', peerInfo.id.toString())
 
-  // we aren't bootstrapping to an existing network so just dial any peers
+  // we aren't bootstrapping to an existing network 
+  // so we just dial any peers
   // that are discovered
   try {
     await node.dial(peerInfo.multiaddrs)

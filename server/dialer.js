@@ -43,34 +43,30 @@ const node = await createLibp2p({
   }
 })
 
-
+// Emitted when a peer has been found
 node.addEventListener('peer:connect', (evt) => {
   const peerId = evt.detail
-  console.log('Connection established to:', peerId.toString()) // Emitted when a peer has been found
+  console.log('Connection established to:', peerId.toString()) 
 })
 
 node.addEventListener('peer:discovery', async (evt) => {
   const peerInfo = evt.detail
   console.log('Discovered:', peerInfo.id.toString())
 
-  // we aren't bootstrapping to an existing network so just dial any peers
+  // we aren't bootstrapping to an existing network 
+  // so we just dial any peers
   // that are discovered
   try {
-    // await node.dial(peerInfo.multiaddrs)
-
+    // connect to chat only when dialer find other peers
     const stream = await node.dialProtocol(evt.detail.multiaddrs, '/chat/1.0.0')
     console.log('Dialer dialed to listener on protocol: /chat/1.0.0')
     console.log('Type a message and see what happens ;)')
 
-    // Send stdin to the stream
     stdinToStream(stream)
-    // Read the stream and output to console
     streamToConsole(stream)
   } catch(e) { 
     console.error('Dialer Error While Dialing ... ', e)
   }
-
-
 })
 
 console.info('Dialer:', node.peerId.toString())
