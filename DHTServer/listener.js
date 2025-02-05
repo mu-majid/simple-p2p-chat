@@ -63,16 +63,17 @@ node.addEventListener("peer:discovery", async (evt) => {
 });
 
 await node.handle("/chat/1.0.0", async ({ stream }) => {
+  console.clear()
+  console.log("Start Chatting 🚀 ... \n")
   stdinToStream(stream);
   streamToConsole(stream);
 });
 
 for await (const evt of node.services.kadDHT.provide(node.peerId)) {
-  console.log(">", evt);
 }
 
 console.log(
-  "Announcing listener address:",
+  "listener Node Started at address:",
   node.getMultiaddrs().map((a) => a.toString()),
   "\n"
 );
