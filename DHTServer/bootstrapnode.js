@@ -38,6 +38,6 @@ bootstrapper.addEventListener("peer:discovery", async (evt) => {
 });
 
 console.log(
-  "Bootstrap Multiaddress:",
+  "Bootstrap Node Started at Multiaddress:",
   bootstrapper.getMultiaddrs().map((a) => a.toString())
 );

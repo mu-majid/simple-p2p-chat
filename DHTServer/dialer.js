@@ -53,6 +53,12 @@ const node = await createLibp2p({
   },
 });
 
+console.log(
+  "Dialer Available at address:",
+  node.getMultiaddrs().map((a) => a.toString()),
+  "\n"
+);
+
 node.addEventListener("peer:connect", async (evt) => {
   const peerId = evt.detail;
   console.log("Connection established to: ", peerId.toString());
@@ -76,7 +82,8 @@ for await (const evt of node.services.kadDHT.findPeer(bootstrapPeerId)) {
     console.log("listener's Multiaddress:", listenerPeer.multiaddrs);
     try {
       const stream = await node.dialProtocol(listenerPeer.id, "/chat/1.0.0");
-      console.log("Start Chatting 🚀");
+      console.clear()
+      console.log("Start Chatting 🚀 ... \n");
       stdinToStream(stream);
       streamToConsole(stream);
     } catch (e) {
@@ -87,9 +94,3 @@ for await (const evt of node.services.kadDHT.findPeer(bootstrapPeerId)) {
     }
   }
 }
-
-console.log(
-  "Dialer Available at address:",
-  node.getMultiaddrs().map((a) => a.toString()),
-  "\n"
-);
